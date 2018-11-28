@@ -2,6 +2,7 @@ const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb
 
 const cities = [];
 
+// ! NOTE: stream.json() return a promise
 fetch(endpoint)
   .then(stream => stream.json())
   .then((data) => {
@@ -11,6 +12,7 @@ fetch(endpoint)
 console.log(cities);
 
 const findMatches = (wordToMatch, cities) => {
+  // ! NOTE: 'gi' stands for global and case insensitive
   const regex = new RegExp(wordToMatch, 'gi');
   return cities.filter(place => place.city.match(regex) || place.state.match(regex));
 };
@@ -25,6 +27,8 @@ const displayMatches = (event) => {
       const regex = new RegExp(event.target.value, 'gi');
       const cityName = place.city.replace(regex, `<span class="hl">${event.target.value}</span>`);
       const stateName = place.state.replace(regex, `<span class="hl">${event.target.value}</span>`);
+
+      // ! NOTE:
       return `<li>
           <span class="name">${cityName}, ${stateName}</span>
           <span class="population">${parseFloat(place.population).toLocaleString('en')}</span>
