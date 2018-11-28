@@ -21,11 +21,15 @@ const suggestions = document.querySelector('.suggestions');
 const displayMatches = (event) => {
   const matchArray = findMatches(event.target.value, cities);
   const html = matchArray
-    .map(place => `
-        <li>
-          <span class="name">${place.city}, ${place.state}</span>
-          <span class="population">${place.population}</span>
-        </li>`)
+    .map((place) => {
+      const regex = new RegExp(event.target.value, 'gi');
+      const cityName = place.city.replace(regex, `<span class="hl">${event.target.value}</span>`);
+      const stateName = place.state.replace(regex, `<span class="hl">${event.target.value}</span>`);
+      return `<li>
+          <span class="name">${cityName}, ${stateName}</span>
+          <span class="population">${parseFloat(place.population).toLocaleString('en')}</span>
+        </li>`;
+    })
     .join('');
   suggestions.innerHTML = html;
 };
